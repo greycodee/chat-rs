@@ -6,7 +6,7 @@ use crate::handler::handler::handler_connect;
 use client::tcp_client::ChannelData;
 use tokio::{
     net::TcpListener,
-    sync::broadcast::{self},
+    sync::broadcast,
 };
 #[tokio::main]
 async fn main() {

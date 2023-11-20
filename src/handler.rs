@@ -50,19 +50,38 @@ pub mod handler{
                     break;
                 },
                 Ok(_) => {
-
-                    println!("receive from client: {}", buf);
-                    let client = client.lock().await;
-                    let channel_data = ChannelData{
+                    buf.pop();
+                    let content = buf.drain(..).as_str().to_string();
+                    let mut client = client.lock().await;
+                    let resp = format!("[{}]{} > {}",client.group,client.name,content);
+                    println!("{}",resp);
+                    let mut content_vec = content.split_whitespace();
+                    let mut channel_data = ChannelData{
                         id: client.id,
                         name: client.name.clone(),
                         group: client.group.clone(),
-                        data: buf.drain(..).as_str().to_string(),
+                        data: resp,
+                        is_notify:false,
                     };
+                    match content_vec.next(){
+                        Some("/join")=>{
+                            client.group=content_vec.next().unwrap().to_string();
+                            channel_data.is_notify = true;
+                            channel_data.group = client.group.clone();
+                            channel_data.data = format!("You join group {}!",client.group);
+                        },
+                        Some("/nick")=>{
+                            client.name = content_vec.next().unwrap().to_string();
+                            channel_data.is_notify = true;
+                            channel_data.data = format!("You nick is {}!",client.name);
+                        }
+                        _=>{ 
+                        }
+                    }
                     if tx.send(channel_data).is_err(){
                         eprintln!("channel closed");
                         break;
-                    }
+                    }  
                 },
                 Err(e) => {
                     eprintln!("read error: {}", e);
@@ -75,15 +94,22 @@ pub mod handler{
     
     async fn send_to_client(mut write:OwnedWriteHalf, mut rx: Receiver<ChannelData>, client:Arc<Mutex<TcpClient>>){
         loop {
-            let channel_data = rx.recv().await.unwrap();
+            let mut channel_data = rx.recv().await.unwrap();
             let client = client.lock().await;
-            if client.id == channel_data.id{
+            if !channel_data.is_notify && client.id == channel_data.id{
                 continue;
             }
-            if let Err(e) = write.write_all(channel_data.data.as_bytes()).await{
-                eprintln!("write error: {}", e);
-                break;
+            if channel_data.is_notify && client.id != channel_data.id{
+                continue;
             }
+            if client.group == channel_data.group{
+                channel_data.data.push('\n');
+                if let Err(e) = write.write_all(channel_data.data.as_bytes()).await{
+                    eprintln!("write error: {}", e);
+                    break;
+                }
+            }
+            
         }
     }
     

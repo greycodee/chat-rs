@@ -24,5 +24,6 @@ pub mod tcp_client {
         pub name: String,
         pub group: String,
         pub data: String,
+        pub is_notify: bool,
     }
 }
