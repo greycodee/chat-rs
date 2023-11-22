@@ -25,5 +25,6 @@ pub mod tcp_client {
         pub group: String,
         pub data: String,
         pub is_notify: bool,
+        pub sys_notice: bool,
     }
 }
