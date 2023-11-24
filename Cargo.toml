@@ -7,3 +7,7 @@ edition = "2021"
 
 [dependencies]
 tokio = { version = "1.34.0", features = ["full"] }
+
+[lib]
+name="core"
+path="src/core/mod.rs"
