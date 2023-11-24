@@ -115,8 +115,9 @@ async fn receive_from_client(
                     Some("/join") => {
                         if client.name == "user" {
                             channel_data.is_notify = true;
+                            // "[Notice] Please use /nick [yourName] to set your nickName first!"
                             channel_data.data = format!(
-                                "[Notice] Please use /nick [yourName] to set your nickName first!"
+                                "\x1b[41m\x1b[37m[Notice] Please use /nick [yourName] to set your nickName first!\x1b[0m"
                             )
                         } else {
                             client.group = content_vec.next().unwrap().to_string();
