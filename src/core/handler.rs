@@ -12,7 +12,7 @@ use tokio::{
     },
 };
 
-use crate::{info_format, warn_format, error_format};
+use crate::{info_format, warn_format, error_format,msg_format};
 
 
 use super::client::{ChannelData, TcpClient};
@@ -156,8 +156,9 @@ async fn receive_from_client(
                             channel_data.data = error_format!(
                                 "Please use /nick [yourName] to set your nickName first!"
                             )
+                        }else{
+                            channel_data.data = msg_format!("{}", channel_data.data);
                         }
-                        channel_data.data = format!("{:>20}", channel_data.data)
                     }
                 }
                 if tx.send(channel_data).is_err() {

@@ -50,8 +50,8 @@ macro_rules! warn_format {
 }
 
 #[macro_export]
-macro_rules! debug_format {
+macro_rules! msg_format {
     ($($arg:tt)*) => {
-        format!("\x1b[{}m[debug] {}\x1b[0m", 34, format!($($arg)*))
+        format!("\x1b[{}m{}\x1b[0m", 34, format!($($arg)*))
     }
 }

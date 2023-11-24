@@ -1,5 +1,5 @@
 use core::{
-    blue_text_format, error_format, green_text_format, red_text_format, yellow_text_format,info_format,warn_format,debug_format,
+    blue_text_format, error_format, green_text_format, red_text_format, yellow_text_format,info_format,warn_format,msg_format,
 };
 
 #[test]
@@ -46,6 +46,6 @@ fn test_warn_format() {
 
 #[test]
 fn test_debug_format() {
-    let result = debug_format!("Hello, {}", "world!");
+    let result = msg_format!("Hello, {}", "world!");
     assert_eq!(result, "\x1b[34m[debug] Hello, world!\x1b[0m");
 }
