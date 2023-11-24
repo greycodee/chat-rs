@@ -1,68 +1,51 @@
-use core::color::
-{
-    FONT_COLOR_GREEN,
-    FONT_COLOR_RED,
-    FONT_COLOR_YELLOW,
-    FONT_COLOR_BLUE,
-    FONT_COLOR_MAGENTA,
-    FONT_COLOR_CYAN,
+use core::{
+    blue_text_format, error_format, green_text_format, red_text_format, yellow_text_format,info_format,warn_format,debug_format,
 };
-use core::{colored_format, red_format};
-
-
 
 #[test]
-fn test_colored_format_green() {
-    let a = colored_format!(FONT_COLOR_GREEN, "hello");
-    println!("{}",a);
-    assert_eq!(a, "\x1b[32mhello\x1b[0m");
+fn test_red_text_format() {
+    let result = red_text_format!("Hello, {}", "world!");
+    assert_eq!(result, "\x1b[31mHello, world!\x1b[0m");
 }
 
 #[test]
-fn test_colored_format_red() {
-    let a = colored_format!(FONT_COLOR_RED, "hello");
-    println!("{}",a);
-    assert_eq!(a, "\x1b[31mhello\x1b[0m");
+fn test_green_text_format() {
+    let result = green_text_format!("Hello, {}", "world!");
+    assert_eq!(result, "\x1b[32mHello, world!\x1b[0m");
 }
 
 #[test]
-fn test_colored_format_yellow() {
-    let a = colored_format!(FONT_COLOR_YELLOW, "hello");
-    println!("{}",a);
-    assert_eq!(a, "\x1b[33mhello\x1b[0m");
+fn test_yellow_text_format() {
+    let result = yellow_text_format!("Hello, {}", "world!");
+    assert_eq!(result, "\x1b[33mHello, world!\x1b[0m");
 }
 
 #[test]
-fn test_colored_format_blue() {
-    let a = colored_format!(FONT_COLOR_BLUE, "hello");
-    println!("{}",a);
-    assert_eq!(a, "\x1b[34mhello\x1b[0m");
+fn test_blue_text_format() {
+    let result = blue_text_format!("Hello, {}", "world!");
+    assert_eq!(result, "\x1b[34mHello, world!\x1b[0m");
 }
 
 #[test]
-fn test_colored_format_magenta() {
-    let a = colored_format!(FONT_COLOR_MAGENTA, "hello");
-    println!("{}",a);
-    assert_eq!(a, "\x1b[35mhello\x1b[0m");
+fn test_error_format() {
+    let result = error_format!("Hello, {}", "world!");
+    assert_eq!(result, "\x1b[31m[error] Hello, world!\x1b[0m");
 }
 
 #[test]
-fn test_colored_format_cyan() {
-    let a = colored_format!(FONT_COLOR_CYAN, "hello");
-    println!("{}",a);
-    assert_eq!(a, "\x1b[36mhello\x1b[0m");
+fn test_info_format() {
+    let result = info_format!("Hello, {}", "world!");
+    assert_eq!(result, "\x1b[32m[info] Hello, world!\x1b[0m");
 }
 
 #[test]
-fn test_colored_format_default() {
-    let a = colored_format!(0, "hello");
-    println!("{}",a);
-    assert_eq!(a, "\x1b[0mhello\x1b[0m");
+fn test_warn_format() {
+    let result = warn_format!("Hello, {}", "world!");
+    assert_eq!(result, "\x1b[33m[warn] Hello, world!\x1b[0m");
 }
 
 #[test]
-fn test_red_format() {
-    let a = red_format!("hello red_format");
-    println!("{}",a);
-    assert_eq!(a, "\x1b[31mhello red_format\x1b[0m");
+fn test_debug_format() {
+    let result = debug_format!("Hello, {}", "world!");
+    assert_eq!(result, "\x1b[34m[debug] Hello, world!\x1b[0m");
 }

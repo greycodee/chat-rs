@@ -1,3 +1,4 @@
+
 use std::{collections::HashMap, sync::Arc};
 use tokio::{
     io::{AsyncBufReadExt, AsyncWriteExt},
@@ -10,6 +11,9 @@ use tokio::{
         Mutex,
     },
 };
+
+use crate::{info_format, warn_format, error_format};
+
 
 use super::client::{ChannelData, TcpClient};
 
@@ -56,8 +60,8 @@ pub async fn handler_connect(
         id: id,
         name: user_name.clone(),
         group: user_group.clone(),
-        data: format!(
-            "[Notice] {} joined, EndPoint:{}:{}!",
+        data: info_format!(
+            "{} joined, EndPoint:{}:{}!",
             user_name.clone(),
             host.clone(),
             port.clone()
@@ -115,17 +119,16 @@ async fn receive_from_client(
                     Some("/join") => {
                         if client.name == "user" {
                             channel_data.is_notify = true;
-                            // "[Notice] Please use /nick [yourName] to set your nickName first!"
-                            channel_data.data = format!(
-                                "\x1b[41m\x1b[37m[Notice] Please use /nick [yourName] to set your nickName first!\x1b[0m"
+                            channel_data.data = error_format!(
+                                "Please use /nick [yourName] to set your nickName first!"
                             )
                         } else {
                             client.group = content_vec.next().unwrap().to_string();
                             channel_data.is_notify = true;
                             channel_data.sys_notice = true;
                             channel_data.group = client.group.clone();
-                            channel_data.data = format!(
-                                "[Notice] {} join group {}!",
+                            channel_data.data = info_format!(
+                                "{} join group {}!",
                                 client.name.clone(),
                                 client.group
                             );
@@ -139,21 +142,22 @@ async fn receive_from_client(
                         channel_data.is_notify = true;
                         if names.contains_key(&nick_name) {
                             channel_data.data =
-                                format!("[Error] {} - Nickname is already taken!", nick_name);
+                                warn_format!("{} - Nickname is already taken!", nick_name);
                         } else {
                             names.remove(&client.name);
                             client.name = nick_name.clone();
-                            channel_data.data = format!("[Notice] You nick is {}!", client.name);
+                            channel_data.data = info_format!("You nick is {}!", client.name);
                             names.insert(nick_name.clone(), 1);
                         }
                     }
                     _ => {
                         if client.name == "user" {
                             channel_data.is_notify = true;
-                            channel_data.data = format!(
-                                "[Error] Please use /nick [yourName] to set your nickName first!"
+                            channel_data.data = error_format!(
+                                "Please use /nick [yourName] to set your nickName first!"
                             )
                         }
+                        channel_data.data = format!("{:>20}", channel_data.data)
                     }
                 }
                 if tx.send(channel_data).is_err() {
