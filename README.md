@@ -1,5 +1,7 @@
 # chat-rs
 
+![](./623171.gif)
+
 ## Introduction
 
 This is a TCP client project written in Rust. It includes a handler (handler.rs) that processes data received from the client.
