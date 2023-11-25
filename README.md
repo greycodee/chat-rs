@@ -1,4 +1,4 @@
-# smallchat-rs
+# chat-rs
 
 ## Introduction
 
@@ -11,13 +11,13 @@ First, you need to install Rust. You can download and install it from the [Rust 
 Then, clone this repository:
 
 ```bash
-git clone https://github.com/greycodee/smallchat-rs
+git clone https://github.com/greycodee/chat-rs
 ```
 
 Navigate to the project directory and build:
 
 ```bash
-cd smallchat-rs
+cd chat-rs
 cargo build
 ```
 
@@ -34,4 +34,5 @@ cargo run
 If your project accepts contributions, this is where you describe how to make a contribution.
 
 ## License
+
 MIT
