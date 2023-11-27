@@ -31,6 +31,11 @@ Run your project:
 cargo run
 ```
 
+connect server
+```bash
+telnet 127.0.0.1 1212
+```
+
 ## Contribution
 
 If your project accepts contributions, this is where you describe how to make a contribution.
